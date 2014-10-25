@@ -48,6 +48,7 @@ def nose_detection(image, neighbors):
         flags = cv2.cv.CV_HAAR_SCALE_IMAGE
     )
     return item
+
 # Find Mouth
 def mouse_detection(image, neighbors):
     item = mouthCascade.detectMultiScale(
