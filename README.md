@@ -28,6 +28,15 @@
 * Age (additional)
 * Gender (additional, http://docs.opencv.org/trunk/modules/contrib/doc/facerec/tutorial/facerec_gender_classification.html)
 
+### Corner Detection
+#### Corner
+* 한글설명 : http://darkpgmr.tistory.com/131
+* 특징점과 관련 있음 (OpenCV lib) : http://docs.opencv.org/trunk/doc/py_tutorials/py_feature2d/py_fast/py_fast.html
+* Harris Corner Detection : http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_feature2d/py_features_harris/py_features_harris.html
+
+#### Contour
+* <FaceDetection.py>의 <CONTOUR PROCESS>를 참조할 것
+
 ## REFERENCES
 * OpenCV reference: http://goo.gl/Ak5z1u
 * Haar Cascades: http://alereimondo.no-ip.org/OpenCV/34
