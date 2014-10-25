@@ -14,7 +14,7 @@ print 'FACE DETECTION SOURCE'
 """
 
 # loading the images and turn it to gray scale.
-DIR = u'./testImage/image1.jpg'
+DIR = u'./testImage/image4.jpg'
 image = cv2.imread(DIR)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 FaceDrawing = True
@@ -109,6 +109,18 @@ cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
 # cv2.imshow("asd", cropNoseConT)
 
 """
+    <CORNER DETECTION PROCESS>
+"""
+# import numpy as np
+# cropNoseCornD = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
+# cropNoseCornD = np.float32(cropNoseCornD)
+# dst = cv2.cornerHarris(cropNoseCornD, 2, 3, 0.04)
+# dst = cv2.dilate(dst, None)
+# cropNose[dst>0.01*dst.max()] = [0,0,255]
+# cv2.imshow('dst',cropNose)
+
+
+"""
     <REPORTING PROCESS>
 """
 # Printout a report
@@ -121,6 +133,6 @@ cv2.imshow("Face found", image)
 # cv2.imshow("Face", cropFace)
 # cv2.imshow("Left Eye", cropEyes[0])
 # cv2.imshow("Right Eye", cropEyes[1])
-cv2.imshow("Nose", cropNose)
+# cv2.imshow("Nose", cropNose)
 # cv2.imshow("Mouth", cropMouth)
 cv2.waitKey(0)

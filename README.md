@@ -35,7 +35,7 @@
 * Harris Corner Detection : http://opencv-python-tutroals.readthedocs.org/en/latest/py_tutorials/py_feature2d/py_features_harris/py_features_harris.html
 
 #### Contour
-* <FaceDetection.py>의 <CONTOUR PROCESS>를 참조할 것
+* FaceDetection.py의 CONTOUR PROCESS를 참조할 것
 
 ## REFERENCES
 * OpenCV reference: http://goo.gl/Ak5z1u
