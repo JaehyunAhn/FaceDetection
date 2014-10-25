@@ -14,7 +14,7 @@ print 'FACE DETECTION SOURCE'
 """
 
 # loading the images and turn it to gray scale.
-DIR = u'./testImage/image3.jpg'
+DIR = u'./testImage/image1.jpg'
 image = cv2.imread(DIR)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 FaceDrawing = True
@@ -106,6 +106,7 @@ contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_N
 # Drawing Process
 cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
 # print contours
+# cv2.imshow("asd", cropNoseConT)
 
 """
     <REPORTING PROCESS>
@@ -120,6 +121,6 @@ cv2.imshow("Face found", image)
 # cv2.imshow("Face", cropFace)
 # cv2.imshow("Left Eye", cropEyes[0])
 # cv2.imshow("Right Eye", cropEyes[1])
-# cv2.imshow("Nose", cropNose)
+cv2.imshow("Nose", cropNose)
 # cv2.imshow("Mouth", cropMouth)
 cv2.waitKey(0)
