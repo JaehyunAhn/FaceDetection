@@ -97,18 +97,29 @@ for (x, y, w, h) in mouth:
         cv2.rectangle(cropFace, (x, y), (x+w, y+h), (255, 0, 0), 1)
 
 """
+    <CONTOUR PROCESS>
+    make a line on cropFace, cropEyes[], cropNose, cropMouth
+"""
+cropNoseConT = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
+ret, thresh = cv2.threshold(cropNoseConT, 127, 255, 0)
+contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+# Drawing Process
+cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
+# print contours
+
+"""
     <REPORTING PROCESS>
 """
-# print report
+# Printout a report
 print 'File Name: ' + DIR.split('/')[2]
 print "Found {0} faces!".format(len(faces))
 print "Found {0} eyes!".format(len(eyes))
 print "Found {0} nose!".format(len(nose))
 print "Found {0} mouth!".format(len(mouth))
 cv2.imshow("Face found", image)
-cv2.imshow("Face", cropFace)
-cv2.imshow("Left Eye", cropEyes[0])
-cv2.imshow("Right Eye", cropEyes[1])
-cv2.imshow("Nose", cropNose)
-cv2.imshow("Mouth", cropMouth)
+# cv2.imshow("Face", cropFace)
+# cv2.imshow("Left Eye", cropEyes[0])
+# cv2.imshow("Right Eye", cropEyes[1])
+# cv2.imshow("Nose", cropNose)
+# cv2.imshow("Mouth", cropMouth)
 cv2.waitKey(0)
