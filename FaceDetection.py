@@ -14,10 +14,10 @@ print 'FACE DETECTION SOURCE'
 """
 
 # loading the images and turn it to gray scale.
-dir = u'./testImage/image2.jpg'
-image = cv2.imread(dir)
+DIR = u'./testImage/image3.jpg'
+image = cv2.imread(DIR)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+FaceDrawing = True
 """
     <EXTRACTION PROCESS>
 """
@@ -31,7 +31,8 @@ cropFace = image
 face = faceArea()
 # Face Extraction
 for (x, y, w, h) in faces:
-    cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    if FaceDrawing:
+        cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 1)
     face.x = x
     face.y = y
     face.w = w
@@ -70,30 +71,44 @@ mouth = mouse_detection(gray, mouth_neighbor)
     1. Crop Face y:y+h, x:x+w (http://stackoverflow.com/questions/15589517/how-to-crop-an-image-in-opencv-using-python#_=_)
     2. Resize: http://docs.opencv.org/trunk/doc/py_tutorials/py_imgproc/py_geometric_transformations/py_geometric_transformations.html
 """
+# initialize
+cropNose = cropMouth = cropFace
+cropEyes = []
+Drawing = False
 # Eyes Extraction
 for (x, y, w, h) in eyes:
-    cv2.rectangle(cropFace, (x, y), (x+w, y+h), (0, 255, 0), 1)
+    cropEyes.append(cropFace[y:y+h, x:x+w])
+    if Drawing:
+        cv2.rectangle(cropFace, (x, y), (x+w, y+h), (0, 255, 0), 1)
 
 # Nose Extraction, HighNose: 콧대까지 측정하기 위한 변수
 highNoseHeight = 18
 highNoseUnderCut = 10
 highNoseWidth = 5
 for (x, y, w, h) in nose:
-    cv2.rectangle(cropFace, (x+highNoseWidth, y-highNoseHeight), (x+w-highNoseWidth, y+h-highNoseUnderCut), (0, 255, 255), 1)
+    cropNose = cropFace[y-highNoseHeight:y+h-highNoseUnderCut, x+highNoseWidth:x+w-highNoseWidth]
+    if Drawing:
+        cv2.rectangle(cropFace, (x+highNoseWidth, y-highNoseHeight), (x+w-highNoseWidth, y+h-highNoseUnderCut), (0, 255, 255), 1)
 
 # Mouth Extraction
 for (x, y, w, h) in mouth:
-    cv2.rectangle(cropFace, (x, y), (x+w, y+h), (255, 0, 0), 1)
+    cropMouth = cropFace[y:y+h, x:x+w]
+    if Drawing:
+        cv2.rectangle(cropFace, (x, y), (x+w, y+h), (255, 0, 0), 1)
 
 """
     <REPORTING PROCESS>
 """
 # print report
-print 'File Name: ' + dir.split('/')[2]
+print 'File Name: ' + DIR.split('/')[2]
 print "Found {0} faces!".format(len(faces))
 print "Found {0} eyes!".format(len(eyes))
 print "Found {0} nose!".format(len(nose))
 print "Found {0} mouth!".format(len(mouth))
 cv2.imshow("Face found", image)
 cv2.imshow("Face", cropFace)
+cv2.imshow("Left Eye", cropEyes[0])
+cv2.imshow("Right Eye", cropEyes[1])
+cv2.imshow("Nose", cropNose)
+cv2.imshow("Mouth", cropMouth)
 cv2.waitKey(0)
