@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from logicLibrary import *
+import numpy as np
+
 print 'FACE DETECTION SOURCE'
 """
     <Jaehyun Ahn FACE RECOGNITION TEST>
@@ -103,25 +105,28 @@ for (x, y, w, h) in mouth:
     <CONTOUR PROCESS>
     make a line on cropFace, cropEyes[], cropNose, cropMouth
 """
-cropNoseConT = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
-ret, thresh = cv2.threshold(cropNoseConT, 127, 255, 0)
-contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-# Drawing Process
-cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
-# print contours
-cv2.imshow("Contours", cropNoseConT)
+contours_draw = False
+if contours_draw:
+    cropNoseConT = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
+    ret, thresh = cv2.threshold(cropNoseConT, 127, 255, 0)
+    contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    # Drawing Process
+    cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
+    print contours
+    cv2.imshow("Contours", cropNoseConT)
 
 """
     <CORNER DETECTION PROCESS>
     find corner on cropFace and mark as a red dots
 """
-import numpy as np
-cropNoseCornD = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
-cropNoseCornD = np.float32(cropNoseCornD)
-dst = cv2.cornerHarris(cropNoseCornD, 2, 3, 0.04)
-dst = cv2.dilate(dst, None)
-# cropNose[dst > 0.01*dst.max()] = [0, 0, 255]
-# cv2.imshow('Corner Detection', cropNose)
+corner_detection = False
+if corner_detection:
+    cropNoseCornD = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
+    cropNoseCornD = np.float32(cropNoseCornD)
+    dst = cv2.cornerHarris(cropNoseCornD, 2, 3, 0.04)
+    dst = cv2.dilate(dst, None)
+    cropNose[dst > 0.01*dst.max()] = [0, 0, 255]
+    cv2.imshow('Corner Detection', cropNose)
 
 
 """

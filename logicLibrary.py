@@ -31,7 +31,7 @@ class faceArea:
 def eye_detection(image, neighbors):
     item = eyeCascade.detectMultiScale(
         image,
-        scaleFactor=1.5,
+        scaleFactor=1.,
         minNeighbors=neighbors,
         minSize=(30, 30),
         flags = cv2.cv.CV_HAAR_SCALE_IMAGE
