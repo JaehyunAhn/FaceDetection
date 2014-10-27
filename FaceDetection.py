@@ -14,10 +14,11 @@ print 'FACE DETECTION SOURCE'
 """
 
 # loading the images and turn it to gray scale.
-DIR = u'./testImage/image4.jpg'
+DIR = u'./testImage/image2.jpg'
 image = cv2.imread(DIR)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 FaceDrawing = True
+cropSize = (200, 200)
 """
     <EXTRACTION PROCESS>
 """
@@ -39,7 +40,7 @@ for (x, y, w, h) in faces:
     face.h = h
     cropFace = image[y:y+h, x:x+w]
     # Crop (above) and Normalize (below)
-    cropFace = cv2.resize(cropFace, (160, 160))
+    cropFace = cv2.resize(cropFace, cropSize)
 gray = cv2.cvtColor(cropFace, cv2.COLOR_BGR2GRAY)
 
 # Eye Detection : While() is to find 2 eyes
@@ -82,13 +83,15 @@ for (x, y, w, h) in eyes:
         cv2.rectangle(cropFace, (x, y), (x+w, y+h), (0, 255, 0), 1)
 
 # Nose Extraction, HighNose: 콧대까지 측정하기 위한 변수
-highNoseHeight = 18
-highNoseUnderCut = 10
-highNoseWidth = 5
+highNoseHeight = int(cropSize[0] * 0.14)
+highNoseUnderCut = int(cropSize[0] * 0.05)
+highNoseWidthCut = int(cropSize[0] * 0.06)
 for (x, y, w, h) in nose:
-    cropNose = cropFace[y-highNoseHeight:y+h-highNoseUnderCut, x+highNoseWidth:x+w-highNoseWidth]
+    cropNose = cropFace[y-highNoseHeight:y+h-highNoseUnderCut,
+               x+highNoseWidthCut:x+w-highNoseWidthCut]
     if Drawing:
-        cv2.rectangle(cropFace, (x+highNoseWidth, y-highNoseHeight), (x+w-highNoseWidth, y+h-highNoseUnderCut), (0, 255, 255), 1)
+        cv2.rectangle(cropFace, (x+highNoseWidthCut, y-highNoseHeight),
+                      (x+w-highNoseWidthCut, y+h-highNoseUnderCut), (0, 255, 255), 1)
 
 # Mouth Extraction
 for (x, y, w, h) in mouth:
@@ -106,18 +109,19 @@ contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_N
 # Drawing Process
 cv2.drawContours(cropNoseConT, contours, -1, (0, 255, 0), 1)
 # print contours
-# cv2.imshow("asd", cropNoseConT)
+cv2.imshow("Contours", cropNoseConT)
 
 """
     <CORNER DETECTION PROCESS>
+    find corner on cropFace and mark as a red dots
 """
-# import numpy as np
-# cropNoseCornD = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
-# cropNoseCornD = np.float32(cropNoseCornD)
-# dst = cv2.cornerHarris(cropNoseCornD, 2, 3, 0.04)
-# dst = cv2.dilate(dst, None)
-# cropNose[dst>0.01*dst.max()] = [0,0,255]
-# cv2.imshow('dst',cropNose)
+import numpy as np
+cropNoseCornD = cv2.cvtColor(cropNose, cv2.COLOR_BGR2GRAY)
+cropNoseCornD = np.float32(cropNoseCornD)
+dst = cv2.cornerHarris(cropNoseCornD, 2, 3, 0.04)
+dst = cv2.dilate(dst, None)
+# cropNose[dst > 0.01*dst.max()] = [0, 0, 255]
+# cv2.imshow('Corner Detection', cropNose)
 
 
 """
@@ -130,9 +134,9 @@ print "Found {0} eyes!".format(len(eyes))
 print "Found {0} nose!".format(len(nose))
 print "Found {0} mouth!".format(len(mouth))
 cv2.imshow("Face found", image)
-# cv2.imshow("Face", cropFace)
-# cv2.imshow("Left Eye", cropEyes[0])
-# cv2.imshow("Right Eye", cropEyes[1])
-# cv2.imshow("Nose", cropNose)
-# cv2.imshow("Mouth", cropMouth)
+cv2.imshow("Face", cropFace)
+cv2.imshow("Left Eye", cropEyes[0])
+cv2.imshow("Right Eye", cropEyes[1])
+cv2.imshow("Nose", cropNose)
+cv2.imshow("Mouth", cropMouth)
 cv2.waitKey(0)
