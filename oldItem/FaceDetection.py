@@ -16,7 +16,7 @@ print 'FACE DETECTION SOURCE'
 """
 
 # loading the images and turn it to gray scale.
-DIR = u'./testImage/image2.jpg'
+DIR = './testImage/image1.jpg'
 image = cv2.imread(DIR)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 FaceDrawing = True

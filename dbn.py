@@ -4,7 +4,6 @@
     - url: http://www.pyimagesearch.com/2014/09/22/getting-started-deep-learning-python/
     - author: Jaehyun Ahn (jaehyunahn@sogang.ac.kr)
 """
-__author__ = 'MLLAB'
 from dbn_head import *
 
 print "Checking the data..."
@@ -27,7 +26,8 @@ image = cv2.imread(DIR[0])
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 test = collect_images('./testImage', True, 'hello')
+image_seperation(DIR)
 print test['label']
 
-cv2.imshow("asdf", gray)
-cv2.waitKey(0)
+# cv2.imshow("asdf", gray)
+# cv2.waitKey(0)
