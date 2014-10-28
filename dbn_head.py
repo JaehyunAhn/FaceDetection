@@ -17,22 +17,21 @@ def unpickle(file):
     return dict
 
 # collect images <.jpg>file, in dir_path, and attach label if user wants
-def collect_images(dir_path, label_detection, label_name):
+def collect_images(dict, dir_path, label_detection, label_name):
     images = glob.glob(dir_path + '/*.jpg')
     # add a new label and make a dictionary type list
     if label_detection is True:
-        image_list = []
-        data_list = {'label': label_name, 'data_set': image_list}
         for image_dir in images:
             image = cv2.imread(image_dir)
-            image_list.append(image)
-        return data_list
+            dict['data_set'].append(image)
+            dict['label'].append(label_name)
+        return dict
     # return list of <.jpg> file list
     else:
         return images
 
 # read images in the folder and seperate images to eyes, noses, mouth
-def image_seperation(image_list):
+def image_separation(image_list):
     print '[Notice] Image_separation function called.'
     for image_path in image_list:
         print 'PROCESSING: ', image_path
@@ -136,9 +135,9 @@ def image_seperation(image_list):
 def move_items_to_folders():
     # grap images
     faces = glob.glob('./testImage/*_face.jpg')
-    print len(faces)
+    print len(faces), 'faces were moved'
     noses = glob.glob('./testImage/*_nose.jpg')
-    print len(noses)
+    print len(noses), 'noses were moved'
     mouths = glob.glob('./testImage/*_mouth.jpg')
     left_eyes = glob.glob('./testImage/*_left_eye.jpg')
     right_eyes = glob.glob('./testImage/*_right_eye.jpg')
@@ -153,3 +152,35 @@ def move_items_to_folders():
         shutil.move(left_eye, './testImage/left_eyes/')
     for right_eye in right_eyes:
         shutil.move(right_eye, './testImage/right_eyes/')
+
+def cvt_array_to_BGR(array, width, height):
+    # BGR
+    image = [[0 for x in xrange(width)] for x in xrange(height)]
+    for row in range(width):
+        for col in range(height):
+            image[row][col] = [0, 0, 0]
+    for i in range(1024):
+        row = int(i / width)
+        col = int(i % width)
+        image[row][col] = [array[i+2048], array[i+1024], array[i]]
+    # convert numpy array
+    image = np.asarray(image)
+    return image
+
+def cvt_BGR_to_array(BGR, width, height):
+    # BGR to RGB array
+    array = []
+    # Save Red Color
+    for row in range(width):
+        for col in range(height):
+            array.append(BGR[row][col][2])
+    # Save Glue Color
+    for row in range(width):
+        for col in range(height):
+            array.append(BGR[row][col][1])
+    # Save Green Color
+    for row in range(width):
+        for col in range(height):
+            array.append(BGR[row][col][0])
+    array = np.asarray(array)
+    return array
