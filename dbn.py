@@ -15,11 +15,6 @@ print "Checking the data..."
                     else
                         return list of image files
 """
-DIR = u'./testImage/image2.jpg'
-image = cv2.imread(DIR)
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-# crop_size = (32, 32)
-# result = cv2.resize(gray, crop_size)
 
 DIR = collect_images('./testImage', False, 0)
 image = cv2.imread(DIR[0])

@@ -6,6 +6,7 @@ from nolearn.dbn import DBN
 import numpy as np
 import cPickle
 import glob
+import shutil
 from logicLibrary import *
 
 # open data and translate it as dictionary data type
@@ -32,9 +33,10 @@ def collect_images(dir_path, label_detection, label_name):
 
 # read images in the folder and seperate images to eyes, noses, mouth
 def image_seperation(image_list):
+    print '[Notice] Image_separation function called.'
     for image_path in image_list:
         print 'PROCESSING: ', image_path
-        file_name = image_path.split('/')[1][:-3]
+        file_name = image_path.split('/')[1][:-4]
         image = cv2.imread(image_path)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         FaceDrawing = True
@@ -128,3 +130,26 @@ def image_seperation(image_list):
         print "    Found {0} nose!".format(len(nose))
         print "    Found {0} mouth!".format(len(mouth))
     print "Done."
+    move_items_to_folders()
+    return 1
+
+def move_items_to_folders():
+    # grap images
+    faces = glob.glob('./testImage/*_face.jpg')
+    print len(faces)
+    noses = glob.glob('./testImage/*_nose.jpg')
+    print len(noses)
+    mouths = glob.glob('./testImage/*_mouth.jpg')
+    left_eyes = glob.glob('./testImage/*_left_eye.jpg')
+    right_eyes = glob.glob('./testImage/*_right_eye.jpg')
+    # move it to suitable folders
+    for face in faces:
+        shutil.move(face, './testImage/faces/')
+    for nose in noses:
+        shutil.move(nose, './testImage/noses/')
+    for mouth in mouths:
+        shutil.move(mouth, './testImage/mouths/')
+    for left_eye in left_eyes:
+        shutil.move(left_eye, './testImage/left_eyes/')
+    for right_eye in right_eyes:
+        shutil.move(right_eye, './testImage/right_eyes/')
