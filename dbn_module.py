@@ -67,7 +67,7 @@ test = collect_images(
     label_addition=True,
     label_name=4)
 
-print len(test['data'])
+print len(test['data']), 'data lists'
 
 java_array = cvt_java_array(test)
 # Save dictionary to .csv file
@@ -77,9 +77,10 @@ java_array = cvt_java_array(test)
     <START TRAINING>
     - Referred from : http://goo.gl/GBYZvR
 """
+
 dataset = datasets.fetch_mldata("MNIST Original")
-print type(dataset), type(dataset.data), type(dataset.data[0]), type(dataset.target), type(dataset.target[0])
-print type(java_array), type(java_array.data), type(java_array.data[0]), type(java_array.label), type(java_array.label[0])
+print type(dataset), type(dataset.data), type(dataset.data[0]), type(dataset.target), type(dataset.target[0]), dataset.target[0]
+print type(java_array), type(java_array.data), type(java_array.data[0]), type(java_array.label), type(java_array.label[0]), java_array.label[0]
 # scale the data to the range [0, 1] and then construct the training
 # and testing splits
 # version 1 == Jaehyun's, version 2 == tests'
@@ -91,7 +92,8 @@ elif version == 10:
     (trainX, testX, trainY, testY) = train_test_split(
         dataset.data / 255.0, dataset.target.astype('int0'), test_size=0.33)
 
-print trainX.shape
+print len(trainX[0])
+
 # train the Deep Belief Network with 784 input units (the flattened,
 # 28x28 grayscale image), 300 hidden units, 10 output units (one for
 # each possible output classification, which are the digits 1-10)
@@ -100,7 +102,8 @@ dbn = DBN(
     learn_rates=0.3,
     learn_rate_decays=0.9,
     epochs=version,
-    verbose=1)
+    verbose=1,
+)
 dbn.fit(trainX, trainY)
 # compute the predictions for the test data and show a classification
 # report
@@ -120,22 +123,24 @@ for i in np.random.choice(np.arange(0, len(testY)), size = (10,)):
     cv2.imshow("Digit", image)
     cv2.waitKey(0)
 
+
 """
     <TEST DATA>
     CIFAR-10:
         'data': 10000개, 1개의 array당 3072의 정보, 32x32 1024Red, 1024Green 1024Blue
         'labels': 10000개, 0-9까지의 라벨로 분류되어 있음
 """
+
 """
-# TEST1 : CIFAR-10
-dict = unpickle('./data_batch_1')
-item = dict['data'][1023]
-test2 = cvt_array_to_BGR(item, 32, 32)
-cv2.imshow("CIFAR-ITEM", test2)
-print type(test2)
-print type(image)
-print isinstance(dict['data'][0], np.ndarray)
-cv2.waitKey(0)
+# # TEST1 : CIFAR-10
+# dict = unpickle('./data_batch_1')
+# item = dict['data'][1023]
+# test2 = cvt_array_to_BGR(item, 32, 32)
+# cv2.imshow("CIFAR-ITEM", test2)
+# print type(test2)
+# print type(image)
+# print isinstance(dict['data'][0], np.ndarray)
+# cv2.waitKey(0)
 
 #TEST2 : Handwritten machine learning
 dataset = datasets.fetch_mldata("MNIST Original")
@@ -147,4 +152,9 @@ for i in range(784):
 asdf = np.asarray(asdf)
 cv2.imshow("HANDWRITTEN",asdf)
 cv2.waitKey(0)
+
 """
+
+# image = cv2.imread('./testImage/image1.jpg')
+# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+# print type(gray)

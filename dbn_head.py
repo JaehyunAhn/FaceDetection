@@ -25,7 +25,7 @@ def collect_images(dict, dir_path, label_addition, label_name):
     if label_addition is True:
         for image_dir in images:
             image = cv2.imread(image_dir)
-            array = cvt_BGR_to_array(image, 32, 32)
+            array = cvt_BGR_to_array(image, 28, 28)
             dict['data'].append(array)
             dict['label'].append(float(label_name))
         return dict
@@ -201,18 +201,20 @@ def cvt_BGR_to_array(BGR, width, height):
     # BGR to RGB array
     array = []
     crop_image = cv2.resize(BGR, (width, height))
+    crop_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY)
+    array.append(crop_image)
     # Save Red Color
-    for row in range(width):
-        for col in range(height):
-            array.append(crop_image[row][col][2])
-    # Save Blue Color
-    for row in range(width):
-        for col in range(height):
-            array.append(crop_image[row][col][1])
-    # Save Green Color
-    for row in range(width):
-        for col in range(height):
-            array.append(crop_image[row][col][0])
+    # for row in range(width):
+    #     for col in range(height):
+    #         array.append(crop_image[row][col][2])
+    # # Save Blue Color
+    # for row in range(width):
+    #     for col in range(height):
+    #         array.append(crop_image[row][col][1])
+    # # Save Green Color
+    # for row in range(width):
+    #     for col in range(height):
+    #         array.append(crop_image[row][col][0])
     array = np.asarray(array)
     return array
 
