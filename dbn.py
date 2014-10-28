@@ -19,14 +19,14 @@ print "Checking the data..."
 # initialize data set
 image_list = []
 label_index = []
-data_list = {'label': label_index, 'data_set': image_list}
+data_list = {'label': label_index, 'data': image_list}
 
 DIR = collect_images(data_list, './testImage', False, 0)
 image = cv2.imread(DIR[0])
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 test = collect_images(data_list, './testImage', True, 'hello')
-# print test['data_set']
+# print test['data']
 # image_separation(DIR)
 
 """

@@ -23,7 +23,7 @@ def collect_images(dict, dir_path, label_detection, label_name):
     if label_detection is True:
         for image_dir in images:
             image = cv2.imread(image_dir)
-            dict['data_set'].append(image)
+            dict['data'].append(image)
             dict['label'].append(label_name)
         return dict
     # return list of <.jpg> file list
