@@ -7,6 +7,7 @@ import numpy as np
 import cPickle
 import glob
 import shutil
+import csv
 from logicLibrary import *
 
 # open data and translate it as dictionary data type
@@ -17,13 +18,14 @@ def unpickle(file):
     return dict
 
 # collect images <.jpg>file, in dir_path, and attach label if user wants
-def collect_images(dict, dir_path, label_detection, label_name):
+def collect_images(dict, dir_path, label_addition, label_name):
     images = glob.glob(dir_path + '/*.jpg')
     # add a new label and make a dictionary type list
-    if label_detection is True:
+    if label_addition is True:
         for image_dir in images:
             image = cv2.imread(image_dir)
-            dict['data'].append(image)
+            array = cvt_BGR_to_array(image, 32, 32)
+            dict['data'].append(array)
             dict['label'].append(label_name)
         return dict
     # return list of <.jpg> file list
@@ -135,23 +137,50 @@ def image_separation(image_list):
 def move_items_to_folders():
     # grap images
     faces = glob.glob('./testImage/*_face.jpg')
-    print len(faces), 'faces were moved'
     noses = glob.glob('./testImage/*_nose.jpg')
-    print len(noses), 'noses were moved'
     mouths = glob.glob('./testImage/*_mouth.jpg')
     left_eyes = glob.glob('./testImage/*_left_eye.jpg')
     right_eyes = glob.glob('./testImage/*_right_eye.jpg')
     # move it to suitable folders
     for face in faces:
-        shutil.move(face, './testImage/faces/')
+        try:
+            shutil.move(face, './testImage/faces/')
+        except:
+            print '[ERROR dbn_head.py] Failed to move faces to folder'
+        else:
+            print len(faces), 'faces were moved'
+    # Move Nose
     for nose in noses:
-        shutil.move(nose, './testImage/noses/')
+        try:
+            shutil.move(nose, './testImage/noses/')
+        except:
+            print '[ERROR dbn_head.py] Failed to move noses to folder'
+        else:
+            print len(noses), 'noses were moved'
+    # Move mouth
     for mouth in mouths:
-        shutil.move(mouth, './testImage/mouths/')
+        try:
+            shutil.move(mouth, './testImage/mouths/')
+        except:
+            print '[ERROR dbn_head.py] Failed to move mouths to folder'
+        else:
+            print len(mouths), 'mouses were moved'
+    # Left eyes
     for left_eye in left_eyes:
-        shutil.move(left_eye, './testImage/left_eyes/')
+        try:
+            shutil.move(left_eye, './testImage/left_eyes/')
+        except:
+            print '[ERROR dbn_head.py] Failed to move left_eyes to folder'
+        else:
+            print len(left_eyes), 'left eyes were moved'
+    # Right eyes
     for right_eye in right_eyes:
-        shutil.move(right_eye, './testImage/right_eyes/')
+        try:
+            shutil.move(right_eye, './testImage/right_eyes/')
+        except:
+            print '[ERROR dbn_head.py] Failed to move right_eyes to folder'
+        else:
+            print len(right_eyes), 'right_eyes were moved'
 
 def cvt_array_to_BGR(array, width, height):
     # BGR
@@ -170,17 +199,26 @@ def cvt_array_to_BGR(array, width, height):
 def cvt_BGR_to_array(BGR, width, height):
     # BGR to RGB array
     array = []
+    crop_image = cv2.resize(BGR, (width, height))
     # Save Red Color
     for row in range(width):
         for col in range(height):
-            array.append(BGR[row][col][2])
+            array.append(crop_image[row][col][2])
     # Save Glue Color
     for row in range(width):
         for col in range(height):
-            array.append(BGR[row][col][1])
+            array.append(crop_image[row][col][1])
     # Save Green Color
     for row in range(width):
         for col in range(height):
-            array.append(BGR[row][col][0])
+            array.append(crop_image[row][col][0])
     array = np.asarray(array)
     return array
+
+# Save Dictonary to <filename.csv> file
+def save_dictionary(dict, filename):
+    with open(filename, 'wb') as csv_file:
+        w = csv.DictWriter(csv_file, dict.keys())
+        w.writeheader()
+        w.writerow(dict)
+        print filename, 'was written!'
