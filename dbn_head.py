@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from sklearn.datasets.base import Bunch
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import classification_report
 from sklearn import datasets
@@ -26,7 +27,7 @@ def collect_images(dict, dir_path, label_addition, label_name):
             image = cv2.imread(image_dir)
             array = cvt_BGR_to_array(image, 32, 32)
             dict['data'].append(array)
-            dict['label'].append(label_name)
+            dict['label'].append(float(label_name))
         return dict
     # return list of <.jpg> file list
     else:
@@ -204,7 +205,7 @@ def cvt_BGR_to_array(BGR, width, height):
     for row in range(width):
         for col in range(height):
             array.append(crop_image[row][col][2])
-    # Save Glue Color
+    # Save Blue Color
     for row in range(width):
         for col in range(height):
             array.append(crop_image[row][col][1])
@@ -222,3 +223,15 @@ def save_dictionary(dict, filename):
         w.writeheader()
         w.writerow(dict)
         print filename, 'was written!'
+
+# convert it to java dictonary type
+def cvt_java_array(dict):
+    java_dict = Bunch()
+    for labels in dict['label']:
+        labels = np.asarray(labels)
+    for data in dict['data']:
+        data = np.asarray(data)
+    # save for np.asarray
+    java_dict.data = np.asarray(dict['data'])
+    java_dict.label = np.asarray(dict['label'])
+    return java_dict
