@@ -2,6 +2,7 @@
 from sklearn.datasets.base import Bunch
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
 from sklearn import datasets
 from nolearn.dbn import DBN
 import numpy as np
@@ -25,9 +26,10 @@ def collect_images(dict, dir_path, label_addition, label_name):
     if label_addition is True:
         for image_dir in images:
             image = cv2.imread(image_dir)
-            array = cvt_BGR_to_array(image, 28, 28)
+            array = cvt_BGR_to_array(image, 32, 32)
+            array = np.asarray(array)
             dict['data'].append(array)
-            dict['label'].append(float(label_name))
+            dict['labels'].append(label_name)
         return dict
     # return list of <.jpg> file list
     else:
@@ -201,21 +203,18 @@ def cvt_BGR_to_array(BGR, width, height):
     # BGR to RGB array
     array = []
     crop_image = cv2.resize(BGR, (width, height))
-    crop_image = cv2.cvtColor(crop_image, cv2.COLOR_BGR2GRAY)
-    array.append(crop_image)
     # Save Red Color
-    # for row in range(width):
-    #     for col in range(height):
-    #         array.append(crop_image[row][col][2])
-    # # Save Blue Color
-    # for row in range(width):
-    #     for col in range(height):
-    #         array.append(crop_image[row][col][1])
-    # # Save Green Color
-    # for row in range(width):
-    #     for col in range(height):
-    #         array.append(crop_image[row][col][0])
-    array = np.asarray(array)
+    for row in range(width):
+        for col in range(height):
+            array.append(crop_image[row][col][2])
+    # Save Blue Color
+    for row in range(width):
+        for col in range(height):
+            array.append(crop_image[row][col][1])
+    # Save Green Color
+    for row in range(width):
+        for col in range(height):
+            array.append(crop_image[row][col][0])
     return array
 
 # Save Dictonary to <filename.csv> file
@@ -227,13 +226,7 @@ def save_dictionary(dict, filename):
         print filename, 'was written!'
 
 # convert it to java dictonary type
-def cvt_java_array(dict):
-    java_dict = Bunch()
-    for labels in dict['label']:
-        labels = np.asarray(labels)
-    for data in dict['data']:
-        data = np.asarray(data)
-    # save for np.asarray
-    java_dict.data = np.asarray(dict['data'])
-    java_dict.label = np.asarray(dict['label'])
-    return java_dict
+def cvt_tastable_set(dict):
+    data_train = np.vstack([dict['data']])
+    labels_train = np.hstack([dict['labels']])
+    return data_train, labels_train
