@@ -1,10 +1,4 @@
 # -*- coding: utf-8 -*-
-from sklearn.datasets.base import Bunch
-from sklearn.cross_validation import train_test_split
-from sklearn.metrics import classification_report
-from sklearn.metrics import confusion_matrix
-from sklearn import datasets
-from nolearn.dbn import DBN
 import numpy as np
 import cPickle
 import glob

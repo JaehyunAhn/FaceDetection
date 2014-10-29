@@ -4,6 +4,10 @@
     - url: http://www.pyimagesearch.com/2014/09/22/getting-started-deep-learning-python/
     - author: Jaehyun Ahn (jaehyunahn@sogang.ac.kr)
 """
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+from sklearn import datasets
+from nolearn.dbn import DBN
 from dbn_head import *
 
 print "Checking the data..."
@@ -72,22 +76,24 @@ for i in range(100):
     <START TRAINING>
     - Referred from : http://goo.gl/GBYZvR
 """
+# Collect Data
 # dataset = unpickle('data_batch_1')
 train['data'] = np.asarray(train['data'])
 data_train, labels_train = cvt_tastable_set(train)
 data_train = data_train.astype('float') / 255.
 
+# Training Data
 n_feat = data_train.shape[1]
 n_targets = labels_train.max() + 1
-
 net = DBN(
     [n_feat, n_feat / 3, n_targets],
     epochs=5,
     learn_rates=0.05,
-    verbose=1
+    verbose=4
 )
 net.fit(data_train, labels_train)
 
+# Test set generation
 image_list = []
 label_index = []
 data_list = {'labels': label_index, 'data': image_list}
@@ -96,12 +102,31 @@ test = collect_images(
     dir_path='./testImage/right_eyes',
     label_addition=True,
     label_name=1)
+test = collect_images(
+    dict=test,
+    dir_path='./testImage/left_eyes',
+    label_addition=True,
+    label_name=1
+)
+test = collect_images(
+    dict=test,
+    dir_path='./testImage/mouths',
+    label_addition=True,
+    label_name=2
+)
+test = collect_images(
+    dict=test,
+    dir_path='./testImage/noses',
+    label_addition=True,
+    label_name=3
+)
 test['data'] = np.asarray(test['data'])
 data_test = test['data'].astype('float') / 255.
 labels_test = np.array(test['labels'])
 expected = labels_test
 predicted = net.predict(data_test)
 
+# Print out Reports
 print "Classification report for classifier %s:\n%s\n" % (
     net, classification_report(expected, predicted))
 print "Confusion matrix:\n%s" % confusion_matrix(expected, predicted)
@@ -136,7 +161,3 @@ cv2.imshow("HANDWRITTEN",asdf)
 cv2.waitKey(0)
 
 """
-
-# image = cv2.imread('./testImage/image1.jpg')
-# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-# print type(gray)
