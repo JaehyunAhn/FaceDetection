@@ -23,9 +23,12 @@ print "Checking the data..."
     - image_separation(DIR)
             read image folder and detect & crop save into separate folder
 """
+# image_list = []
+# label_index = []
+# data_list = {'labels': label_index, 'data': image_list}
 # DIR = collect_images(
 #     dict=data_list,
-#     dir_path='./testImage',
+#     dir_path='./yeragoData',
 #     label_addition=False,
 #     label_name=0)
 # image = cv2.imread(DIR[0])
@@ -47,27 +50,27 @@ data_list = {'labels': label_index, 'data': image_list}
 # Call collect_images and add a label
 i = 0
 train = data_list
-for i in range(100):
-    train = collect_images(
-        dict=train,
-        dir_path='./testImage/faces',
-        label_addition=True,
-        label_name=0)
-    train = collect_images(
-        dict=train,
-        dir_path='./testImage/left_eyes',
-        label_addition=True,
-        label_name=1)
-    train = collect_images(
-        dict=train,
-        dir_path='./testImage/mouths',
-        label_addition=True,
-        label_name=2)
-    train = collect_images(
-        dict=train,
-        dir_path='./testImage/noses',
-        label_addition=True,
-        label_name=3)
+
+train = collect_images(
+    dict=train,
+    dir_path='./yeragoData/faces',
+    label_addition=True,
+    label_name=0)
+train = collect_images(
+    dict=train,
+    dir_path='./yeragoData/left_eyes',
+    label_addition=True,
+    label_name=1)
+train = collect_images(
+    dict=train,
+    dir_path='./yeragoData/mouths',
+    label_addition=True,
+    label_name=2)
+train = collect_images(
+    dict=train,
+    dir_path='./yeragoData/noses',
+    label_addition=True,
+    label_name=3)
 
 # Save dictionary to .csv file
 # save_dictionary(dict=test, filename='testdata.csv')
@@ -88,7 +91,7 @@ n_targets = labels_train.max() + 1
 net = DBN(
     [n_feat, n_feat / 3, n_targets],
     epochs=5,
-    learn_rates=0.05,
+    learn_rates=0.3,
     verbose=4
 )
 net.fit(data_train, labels_train)
@@ -99,27 +102,28 @@ label_index = []
 data_list = {'labels': label_index, 'data': image_list}
 test = collect_images(
     dict=data_list,
-    dir_path='./testImage/right_eyes',
+    dir_path='./yeragoData/testSet/right_eyes',
     label_addition=True,
     label_name=1)
 test = collect_images(
     dict=test,
-    dir_path='./testImage/left_eyes',
+    dir_path='./yeragoData/testSet/left_eyes',
     label_addition=True,
     label_name=1
 )
 test = collect_images(
     dict=test,
-    dir_path='./testImage/mouths',
+    dir_path='./yeragoData/testSet/mouths',
     label_addition=True,
     label_name=2
 )
 test = collect_images(
     dict=test,
-    dir_path='./testImage/noses',
+    dir_path='./yeragoData/testSet/noses',
     label_addition=True,
     label_name=3
 )
+
 test['data'] = np.asarray(test['data'])
 data_test = test['data'].astype('float') / 255.
 labels_test = np.array(test['labels'])

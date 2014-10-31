@@ -101,9 +101,14 @@ def image_separation(image_list):
             cropEyes.append(cropFace[y:y+h, x:x+w])
             if Drawing:
                 cv2.rectangle(cropFace, (x, y), (x+w, y+h), (0, 255, 0), 1)
-        cv2.imwrite(file_name + '_left_eye.jpg', cropEyes[0])
-        if len(cropEyes) >= 2:
+        if len(cropEyes) == 1:
+            print "Only one eye detected in ", str(file_name)
+            cv2.imwrite(file_name + '_left_eye.jpg', cropEyes[0])
+        elif len(cropEyes) >= 2:
+            cv2.imwrite(file_name + '_left_eye.jpg', cropEyes[0])
             cv2.imwrite(file_name + '_right_eye.jpg', cropEyes[1])
+        else:
+            print "There's no Eye in ", str(file_name)
 
         # Nose Extraction, HighNose: 콧대까지 측정하기 위한 변수
         highNoseHeight = int(cropSize[0] * 0.14)
@@ -128,20 +133,20 @@ def image_separation(image_list):
         print "    Found {0} nose!".format(len(nose))
         print "    Found {0} mouth!".format(len(mouth))
     print "Done."
-    move_items_to_folders()
+    move_items_to_folders(dir_path)
     return 1
 
-def move_items_to_folders():
+def move_items_to_folders(dir_path):
     # grap images
-    faces = glob.glob('./testImage/*_face.jpg')
-    noses = glob.glob('./testImage/*_nose.jpg')
-    mouths = glob.glob('./testImage/*_mouth.jpg')
-    left_eyes = glob.glob('./testImage/*_left_eye.jpg')
-    right_eyes = glob.glob('./testImage/*_right_eye.jpg')
+    faces = glob.glob(dir_path+'/*_face.jpg')
+    noses = glob.glob(dir_path+'/*_nose.jpg')
+    mouths = glob.glob(dir_path+'/*_mouth.jpg')
+    left_eyes = glob.glob(dir_path+'/*_left_eye.jpg')
+    right_eyes = glob.glob(dir_path+'/*_right_eye.jpg')
     # move it to suitable folders
     for face in faces:
         try:
-            shutil.move(face, './testImage/faces/')
+            shutil.move(face, dir_path+'/faces/')
         except:
             print '[ERROR dbn_head.py] Failed to move faces to folder'
         else:
@@ -149,7 +154,7 @@ def move_items_to_folders():
     # Move Nose
     for nose in noses:
         try:
-            shutil.move(nose, './testImage/noses/')
+            shutil.move(nose, dir_path+'/noses/')
         except:
             print '[ERROR dbn_head.py] Failed to move noses to folder'
         else:
@@ -157,7 +162,7 @@ def move_items_to_folders():
     # Move mouth
     for mouth in mouths:
         try:
-            shutil.move(mouth, './testImage/mouths/')
+            shutil.move(mouth, dir_path+'/mouths/')
         except:
             print '[ERROR dbn_head.py] Failed to move mouths to folder'
         else:
@@ -165,7 +170,7 @@ def move_items_to_folders():
     # Left eyes
     for left_eye in left_eyes:
         try:
-            shutil.move(left_eye, './testImage/left_eyes/')
+            shutil.move(left_eye, dir_path+'/left_eyes/')
         except:
             print '[ERROR dbn_head.py] Failed to move left_eyes to folder'
         else:
@@ -173,7 +178,7 @@ def move_items_to_folders():
     # Right eyes
     for right_eye in right_eyes:
         try:
-            shutil.move(right_eye, './testImage/right_eyes/')
+            shutil.move(right_eye, dir_path+'/right_eyes/')
         except:
             print '[ERROR dbn_head.py] Failed to move right_eyes to folder'
         else:
