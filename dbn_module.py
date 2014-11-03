@@ -50,28 +50,31 @@ data_list = {'labels': label_index, 'data': image_list}
 # Call collect_images and add a label
 i = 0
 train = data_list
-
 train = collect_images(
     dict=train,
-    dir_path='./yeragoData/faces',
+    dir_path='./yeragoData/right_eyes',
     label_addition=True,
     label_name=0)
 train = collect_images(
     dict=train,
     dir_path='./yeragoData/left_eyes',
     label_addition=True,
-    label_name=1)
+    label_name=0)
 train = collect_images(
     dict=train,
     dir_path='./yeragoData/mouths',
     label_addition=True,
-    label_name=2)
+    label_name=1)
 train = collect_images(
     dict=train,
     dir_path='./yeragoData/noses',
     label_addition=True,
+    label_name=2)
+train = collect_images(
+    dict=train,
+    dir_path='./yeragoData/faces',
+    label_addition=True,
     label_name=3)
-
 # Save dictionary to .csv file
 # save_dictionary(dict=test, filename='testdata.csv')
 
@@ -84,46 +87,52 @@ train = collect_images(
 train['data'] = np.asarray(train['data'])
 data_train, labels_train = cvt_tastable_set(train)
 data_train = data_train.astype('float') / 255.
+labels_train = labels_train
 
 # Training Data
 n_feat = data_train.shape[1]
 n_targets = labels_train.max() + 1
 net = DBN(
     [n_feat, n_feat / 3, n_targets],
-    epochs=5,
-    learn_rates=0.3,
-    verbose=4
+    epochs=20,
+    learn_rates=0.03,
+    verbose=1
 )
 net.fit(data_train, labels_train)
 
 # Test set generation
 image_list = []
 label_index = []
-data_list = {'labels': label_index, 'data': image_list}
+data_list2 = {'labels': label_index, 'data': image_list}
 test = collect_images(
-    dict=data_list,
+    dict=data_list2,
     dir_path='./yeragoData/testSet/right_eyes',
     label_addition=True,
-    label_name=1)
+    label_name=0)
 test = collect_images(
     dict=test,
     dir_path='./yeragoData/testSet/left_eyes',
     label_addition=True,
-    label_name=1
+    label_name=0
 )
 test = collect_images(
     dict=test,
     dir_path='./yeragoData/testSet/mouths',
     label_addition=True,
-    label_name=2
+    label_name=1
 )
 test = collect_images(
     dict=test,
     dir_path='./yeragoData/testSet/noses',
     label_addition=True,
+    label_name=2
+)
+test = collect_images(
+    dict=test,
+    dir_path='./yeragoData/testSet/faces',
+    label_addition=True,
     label_name=3
 )
-
 test['data'] = np.asarray(test['data'])
 data_test = test['data'].astype('float') / 255.
 labels_test = np.array(test['labels'])
