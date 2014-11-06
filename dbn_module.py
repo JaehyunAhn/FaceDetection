@@ -28,10 +28,10 @@ print "Checking the data..."
 # data_list = {'labels': label_index, 'data': image_list}
 # DIR = collect_images(
 #     dict=data_list,
-#     dir_path='./yeragoData',
+#     dir_path='./testImage',
 #     label_addition=False,
 #     label_name=0)
-# image = cv2.imread(DIR[0])
+# # image = cv2.imread(DIR[0])
 # image_separation(DIR)
 
 """

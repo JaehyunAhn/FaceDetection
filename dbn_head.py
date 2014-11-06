@@ -34,7 +34,9 @@ def image_separation(image_list):
     print '[Notice] Image_separation function called.'
     for image_path in image_list:
         print 'PROCESSING: ', image_path
-        file_name = image_path.split('/')[1][:-4]
+        dir_path = './'
+        dir_path += (image_path.split('/')[1] + '/')
+        file_name = image_path.split('/')[2][:-4]
         image = cv2.imread(image_path)
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         FaceDrawing = True
@@ -61,7 +63,7 @@ def image_separation(image_list):
             # Crop (above) and Normalize (below)
             cropFace = cv2.resize(cropFace, cropSize)
         gray = cv2.cvtColor(cropFace, cv2.COLOR_BGR2GRAY)
-        cv2.imwrite(file_name + '_face.jpg', cropFace)
+        cv2.imwrite(dir_path + file_name + '_face.jpg', cropFace)
 
         # Eye Detection : While() is to find 2 eyes
         eye_neighbor = 1
@@ -103,10 +105,10 @@ def image_separation(image_list):
                 cv2.rectangle(cropFace, (x, y), (x+w, y+h), (0, 255, 0), 1)
         if len(cropEyes) == 1:
             print "Only one eye detected in ", str(file_name)
-            cv2.imwrite(file_name + '_left_eye.jpg', cropEyes[0])
+            cv2.imwrite(dir_path + file_name + '_left_eye.jpg', cropEyes[0])
         elif len(cropEyes) >= 2:
-            cv2.imwrite(file_name + '_left_eye.jpg', cropEyes[0])
-            cv2.imwrite(file_name + '_right_eye.jpg', cropEyes[1])
+            cv2.imwrite(dir_path + file_name + '_left_eye.jpg', cropEyes[0])
+            cv2.imwrite(dir_path + file_name + '_right_eye.jpg', cropEyes[1])
         else:
             print "There's no Eye in ", str(file_name)
 
@@ -120,19 +122,20 @@ def image_separation(image_list):
             if Drawing:
                 cv2.rectangle(cropFace, (x+highNoseWidthCut, y-highNoseHeight),
                               (x+w-highNoseWidthCut, y+h-highNoseUnderCut), (0, 255, 255), 1)
-        cv2.imwrite(file_name + '_nose.jpg', cropNose)
+        cv2.imwrite(dir_path + file_name + '_nose.jpg', cropNose)
 
         # Mouth Extraction
         for (x, y, w, h) in mouth:
             cropMouth = cropFace[y:y+h, x:x+w]
             if Drawing:
                 cv2.rectangle(cropFace, (x, y), (x+w, y+h), (255, 0, 0), 1)
-        cv2.imwrite(file_name + '_mouth.jpg', cropMouth)
+        cv2.imwrite(dir_path + file_name + '_mouth.jpg', cropMouth)
         print "    Found {0} faces!".format(len(faces))
         print "    Found {0} eyes!".format(len(eyes))
         print "    Found {0} nose!".format(len(nose))
         print "    Found {0} mouth!".format(len(mouth))
     print "Done."
+    dir_path = image_list[0].split('/')[1]
     move_items_to_folders(dir_path)
     return 1
 
