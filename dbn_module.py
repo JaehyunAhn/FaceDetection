@@ -75,8 +75,8 @@ train = collect_images(
     dir_path='./yeragoData/faces',
     label_addition=True,
     label_name=3)
-# Save dictionary to .csv file
-# save_dictionary(dict=test, filename='testdata.csv')
+# # Save dictionary to .csv file
+# save_dictionary(dict=train, filename='traindata.csv')
 
 """
     <START TRAINING>
@@ -99,6 +99,9 @@ net = DBN(
     verbose=1
 )
 net.fit(data_train, labels_train)
+# f = file('Deeplearned.save', 'wb')
+# cPickle.dump(net, f, protocol=cPickle.HIGHEST_PROTOCOL)
+# f.close()
 
 # Test set generation
 image_list = []
