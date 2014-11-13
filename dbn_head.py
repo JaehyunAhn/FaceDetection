@@ -209,11 +209,11 @@ def cvt_BGR_to_array(BGR, width, height):
     for row in range(width):
         for col in range(height):
             array.append(crop_image[row][col][2])
-    # Save Blue Color
+    # Save Green Color
     for row in range(width):
         for col in range(height):
             array.append(crop_image[row][col][1])
-    # Save Green Color
+    # Save Blue Color
     for row in range(width):
         for col in range(height):
             array.append(crop_image[row][col][0])

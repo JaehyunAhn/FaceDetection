@@ -1,0 +1,61 @@
+=== Summary ===
+
+Correctly Classified Instances        1778               53.1699 %
+Incorrectly Classified Instances      1566               46.8301 %
+Kappa statistic                          0.4788
+Mean absolute error                      0.0865
+Root mean squared error                  0.2048
+Relative absolute error                100.7894 %
+Root relative squared error             98.8986 %
+Total Number of Instances             3344     
+
+=== Detailed Accuracy By Class ===
+
+               TP Rate   FP Rate   Precision   Recall  F-Measure   ROC Area  Class
+                 0.367     0.039      0.328     0.367     0.347      0.925    f_almonds
+                 0.23      0.014      0.266     0.23      0.246      0.924    f_circles
+                 0.709     0.065      0.673     0.709     0.69       0.951    f_ovals
+                 0.091     0.003      0.154     0.091     0.114      0.912    f_rectangles
+                 0         0.002      0         0         0          0.884    f_squares
+                 0         0.002      0         0         0          0.905    f_triangle_diamonds
+                 0.1       0.009      0.065     0.1       0.078      0.881    e_combination
+                 0.231     0.015      0.19      0.231     0.209      0.915    e_diagonal_down
+                 0.524     0.057      0.537     0.524     0.531      0.939    e_diagonal_up
+                 0.476     0.062      0.495     0.476     0.485      0.928    e_horizontal
+                 0.235     0.004      0.222     0.235     0.229      0.943    n_curved
+                 0.589     0.063      0.556     0.589     0.572      0.936    n_diagonal
+                 0.13      0.006      0.222     0.13      0.164      0.907    n_horizontal_impression
+                 0.557     0.055      0.554     0.557     0.556      0.941    n_straight
+                 0.071     0.002      0.143     0.071     0.095      0.9      n_vertical_impression
+                 0.119     0.008      0.161     0.119     0.137      0.926    m_combination
+                 0.614     0.056      0.529     0.614     0.568      0.942    m_curved
+                 0.143     0.002      0.143     0.143     0.143      0.962    m_diagonal_down
+                 0.66      0.018      0.745     0.66      0.7        0.976    m_diagonal_up
+                 0.528     0.032      0.549     0.528     0.538      0.955    m_straight_horizontal
+                 0         0          0         0         0          0.491    m_wavy
+Weighted Avg.    0.532     0.049      0.525     0.532     0.527      0.94 
+
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   g   h   i   j   k   l   m   n   o   p   q   r   s   t   u   <-- classified as
+  61   2  97   4   1   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 |   a = f_almonds
+   6  17  49   1   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 |   b = f_circles
+ 100  39 378   4   6   5   0   0   0   0   0   0   0   0   0   1   0   0   0   0   0 |   c = f_ovals
+   6   2  12   2   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 |   d = f_rectangles
+   5   4  14   2   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 |   e = f_squares
+   8   0  12   0   1   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0 |   f = f_triangle_diamonds
+   0   0   0   0   0   0   2   1   6  11   0   0   0   0   0   0   0   0   0   0   0 |   g = e_combination
+   0   0   0   0   0   0   2  12   9  29   0   0   0   0   0   0   0   0   0   0   0 |   h = e_diagonal_down
+   0   0   0   0   0   0   8  23 195 145   0   0   0   0   0   1   0   0   0   0   0 |   i = e_diagonal_up
+   0   0   0   0   0   0  19  27 153 181   0   0   0   0   0   0   0   0   0   0   0 |   j = e_horizontal
+   0   0   0   0   0   0   0   0   0   0   4   9   0   3   1   0   0   0   0   0   0 |   k = n_curved
+   0   0   0   0   0   0   0   0   0   0   7 234  15 140   1   0   0   0   0   0   0 |   l = n_diagonal
+   0   0   0   0   0   0   0   0   0   0   2  29   6   9   0   0   0   0   0   0   0 |   m = n_horizontal_impression
+   0   0   0   0   0   0   0   0   0   0   4 148   6 204   4   0   0   0   0   0   0 |   n = n_straight
+   0   0   0   0   0   0   0   0   0   0   1   0   0  12   1   0   0   0   0   0   0 |   o = n_vertical_impression
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   5  13   0   1  23   0 |   p = m_combination
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   6 191   0  50  64   0 |   q = m_curved
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1   1   0   5   0 |   r = m_diagonal_down
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1  74   0 161   8   0 |   s = m_diagonal_up
+   0   0   0   0   0   0   0   0   0   0   0   1   0   0   0  17  82   6   4 123   0 |   t = m_straight_horizontal
+   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   1   0 |   u = m_wavy
